@@ -1,4 +1,6 @@
-const { client, getAllLinks, createLink } = require("./index");
+const { client, getAllLinks, createLink, updateLink } = require("./index");
+
+//ON CONFLICT (name) DO NOTHING;
 
 async function createInitialLink() {
   try {
@@ -94,8 +96,17 @@ async function rebuildDB() {
 
 async function testDB() {
   try {
-    const link = await getAllLinks();
-    console.log(link);
+    console.log("Calling updateLink on link[0]");
+    const updateUserResult = await updateLink([0], {
+      link: "http://www.plex.tv/newStuff",
+      date: "10/17/2020",
+      comment: "It's for my movies",
+      clicks: "3",
+      tags: ["Plex"],
+    });
+    console.log("Result:", updateUserResult);
+    const links = await getAllLinks();
+    console.log(links);
   } catch (error) {
     console.error(error);
   } finally {

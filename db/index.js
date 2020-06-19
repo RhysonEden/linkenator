@@ -100,4 +100,5 @@ module.exports = {
   client,
   getAllLinks,
   createLink,
+  updateLink,
 };
