@@ -97,16 +97,15 @@ async function rebuildDB() {
 async function testDB() {
   try {
     console.log("Calling updateLink on link[0]");
-    const updateUserResult = await updateLink([0], {
+    const link = await getAllLinks();
+    console.log(link);
+    const updateUserResult = await updateLink(link[0].id, {
       link: "http://www.plex.tv/newStuff",
       date: "10/17/2020",
       comment: "It's for my movies",
       clicks: "3",
-      tags: ["Plex"],
     });
     console.log("Result:", updateUserResult);
-    const links = await getAllLinks();
-    console.log(links);
   } catch (error) {
     console.error(error);
   } finally {

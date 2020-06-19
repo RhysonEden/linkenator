@@ -12,6 +12,77 @@ async function getAllLinks() {
   return rows;
 }
 
+async function getLinkByTagName(tagName) {
+  try {
+    const { rows: linkId } = await client.query(
+      `
+      SELECT link.id
+      FROM link
+      JOIN post_tags ON posts.id=post_tags."postId"
+      JOIN tags ON tags.id=post_tags."tagId"
+      WHERE tags.name=$1;
+    `,
+      [tagName]
+    );
+
+    return await Promise.all(linkId.map((link) => getLinkById(link.id)));
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getLinkById(linkId) {
+  try {
+    const {
+      rows: [link],
+    } = await client.query(
+      `
+      SELECT *
+      FROM link
+      WHERE id=$1;
+    `,
+      [linkId]
+    );
+
+    if (!link) {
+      throw {
+        name: "LinkNotFound",
+        message: "Could not find a link with that ID",
+      };
+    }
+
+    const { rows: tags } = await client.query(
+      `
+      SELECT tags.*
+      FROM tags
+      JOIN link_tags ON tags.id=post_tags."tagId"
+      WHERE link_tags."linkId"=$1;
+    `,
+      [linkId]
+    );
+    // What do I do with this?
+    // const {
+    //   rows: [author],
+    // } = await client.query(
+    //   `
+    //   SELECT id, username, name, location
+    //   FROM users
+    //   WHERE id=$1;
+    // `,
+    //   [post.authorId]
+    // );
+
+    // post.tags = tags;
+    // post.author = author;
+
+    // delete post.authorId;
+
+    return link;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createTags(name) {
   try {
     const {
@@ -80,7 +151,9 @@ async function updateLink(id, fields = {}) {
   }
 
   try {
-    const result = await client.query(
+    const {
+      rows: [result],
+    } = await client.query(
       `
       UPDATE link
       SET ${setString}
