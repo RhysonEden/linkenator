@@ -1,11 +1,10 @@
-const { Client } = require("pg"); // imports the pg module
+const { Client } = require("pg");
 
-// supply the db name and location of the database
 const client = new Client("postgres://localhost:5432/linkenator-db");
 
 async function getAllLinks() {
   const { rows } = await client.query(
-    `SELECT id, link, date, comment, clicks, tags 
+    `SELECT id, link, date, comment, clicks 
     FROM link;
   `
   );
@@ -13,15 +12,84 @@ async function getAllLinks() {
   return rows;
 }
 
+async function createTags(name) {
+  try {
+    const {
+      rows: [result],
+    } = await client.query(
+      `
+    INSERT INTO tags(name)
+    VALUES ($1)
+    ON CONFLICT (name) DO NOTHING
+    RETURNING *
+    `,
+      [name]
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function createTagLink(linkId, tagId) {
+  try {
+    const {
+      rows: [result],
+    } = await client.query(
+      `
+            INSERT INTO taglinks("linkId", "tagId")
+            VALUES ($1, $2)
+            RETURNING *;
+            `,
+      [linkId, tagId]
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createLink({ link, date, comment, clicks, tags }) {
+  try {
+    const tagResults = await Promise.all(tags.map((tag) => createTags(tag)));
+    const {
+      rows: [result],
+    } = await client.query(
+      `
+      INSERT INTO link(link, date, comment, clicks)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `,
+      [link, date, comment, clicks]
+    );
+    await Promise.all(tagResults.map(({ id }) => createTagLink(result.id, id)));
+    result.tags = tagResults;
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateLink(id, fields = {}) {
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
+
+  if (setString.length === 0) {
+    return;
+  }
+
   try {
     const result = await client.query(
       `
-      INSERT INTO link(link, date, comment, clicks, tags)
-      VALUES ($1, $2, $3, $4, $5);
+      UPDATE link
+      SET ${setString}
+      WHERE id=${id}
+      RETURNING *;
     `,
-      [link, date, comment, clicks, tags]
+      Object.values(fields)
     );
+
     return result;
   } catch (error) {
     throw error;
