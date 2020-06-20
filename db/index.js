@@ -12,6 +12,19 @@ async function getAllLinks() {
   return rows;
 }
 
+async function getAllTags() {
+  try {
+    const { rows: tags } = await client.query(`
+      SELECT *
+      FROM tags;
+    `);
+
+    return tags;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getLinkByTagName(tagName) {
   try {
     const { rows: linkId } = await client.query(
@@ -51,7 +64,9 @@ async function getLinkById(linkId) {
       };
     }
 
-    const { rows: tags } = await client.query(
+    const {
+      rows: [linkId],
+    } = await client.query(
       `
       SELECT tags.*
       FROM tags
@@ -77,7 +92,7 @@ async function getLinkById(linkId) {
 
     // delete post.authorId;
 
-    return link;
+    return linkId;
   } catch (error) {
     throw error;
   }
@@ -174,4 +189,7 @@ module.exports = {
   getAllLinks,
   createLink,
   updateLink,
+  getLinkByTagName,
+  getAllTags,
+  getLinkById,
 };
