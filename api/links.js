@@ -10,25 +10,26 @@ const {
 } = require("../db");
 
 linkRouter.post("/", async (req, res, next) => {
-  const { link, data, comment, clicks = "" } = req.body;
-
+  const { url: link, date, comment, clicks = "", tags = [] } = req.body;
+  console.log(req.body);
   const tagArr = tags.trim().split(/\s+/);
   const linkData = {};
 
-  if (tagArr.length) {
-    linkData.tags = tagArr;
-  }
-
+  // if (tagArr.length) {
+  //   linkData.tags = tagArr;
+  // }
+  console.log("something");
   try {
-    linkData.link = req.user.id;
+    linkData.link = link;
     linkData.date = date;
     linkData.comment = comment;
     linkData.clicks = clicks;
-    linkData.tags = tags;
-
-    const link = await createLink(linkData);
-    if (link) {
-      res.send({ link });
+    linkData.tags = tagArr;
+    console.log("28");
+    const createdLink = await createLink(linkData);
+    console.log("called create link");
+    if (createdLink) {
+      res.send({ createdLink });
     } else {
       ({
         name: "Missing Post Data",
@@ -36,6 +37,7 @@ linkRouter.post("/", async (req, res, next) => {
       });
     }
   } catch ({ name, message }) {
+    console.log(name, message);
     next({ name, message });
   }
 });

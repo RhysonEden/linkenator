@@ -136,6 +136,7 @@ async function createTagLink(linkId, tagId) {
 }
 
 async function createLink({ link, date, comment, clicks, tags }) {
+  console.log("139");
   try {
     const tagResults = await Promise.all(tags.map((tag) => createTags(tag)));
     const {
@@ -150,6 +151,7 @@ async function createLink({ link, date, comment, clicks, tags }) {
     );
     await Promise.all(tagResults.map(({ id }) => createTagLink(result.id, id)));
     result.tags = tagResults;
+    console.log("153", result);
     return result;
   } catch (error) {
     throw error;
