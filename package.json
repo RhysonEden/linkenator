@@ -6,15 +6,19 @@
   "scripts": {
     "seed:dev": "nodemon ./db/seed.js",
     "start": "node index.js",
-    "start:dev": "nodemon index.js"
+    "start:dev": "react-scripts start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "pg": "^8.2.1"
+    "pg": "^8.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

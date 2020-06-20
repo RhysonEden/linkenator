@@ -22,7 +22,7 @@ tagsRouter.get("/", async (req, res) => {
   });
 });
 
-tagsRouter.get("/:tagName/recipes", async (req, res, next) => {
+tagsRouter.get("/:tagName/links", async (req, res, next) => {
   const { tagName } = req.params;
   try {
     const allLinks = await getLinkByTagName(tagName);
