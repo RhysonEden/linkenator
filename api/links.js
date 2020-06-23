@@ -15,9 +15,6 @@ linkRouter.post("/", async (req, res, next) => {
   const tagArr = tags.trim().split(/\s+/);
   const linkData = {};
 
-  // if (tagArr.length) {
-  //   linkData.tags = tagArr;
-  // }
   console.log("something");
   try {
     linkData.link = link;
