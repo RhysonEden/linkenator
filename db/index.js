@@ -8,10 +8,44 @@ async function getAllLinks() {
     FROM link;
   `
   );
+  const links = await Promise.all(
+    rows.map(async (link) => {
+      const { rows: tagIds } = await client.query(
+        `
+  SELECT "tagId"
+  FROM taglinks
+  WHERE "linkId"=$1
+`,
+        [link.id]
+      );
+      const tags = await Promise.all(
+        tagIds.map((tag) => getTagById(tag.tagId))
+      );
+      link.tags = tags;
+      return link;
+    })
+  );
 
-  return rows;
+  return links;
 }
 
+async function getTagById(tagId) {
+  try {
+    const {
+      rows: [tag],
+    } = await client.query(
+      `
+    SELECT *
+    FROM tags
+    WHERE id=$1
+    `,
+      [tagId]
+    );
+    return tag;
+  } catch (error) {
+    throw error;
+  }
+}
 async function getAllTags() {
   try {
     const { rows: tags } = await client.query(`
@@ -25,6 +59,7 @@ async function getAllTags() {
   }
 }
 
+//
 async function getLinkByTagName(tagName) {
   try {
     const { rows: linkId } = await client.query(
@@ -135,7 +170,7 @@ async function createTagLink(linkId, tagId) {
   }
 }
 
-async function createLink({ link, date, comment, clicks, tags }) {
+async function createLink({ link, date, comment, tags }) {
   console.log("139");
   try {
     const tagResults = await Promise.all(tags.map((tag) => createTags(tag)));
@@ -143,11 +178,11 @@ async function createLink({ link, date, comment, clicks, tags }) {
       rows: [result],
     } = await client.query(
       `
-      INSERT INTO link(link, date, comment, clicks)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO link(link, date, comment)
+      VALUES ($1, $2, $3)
       RETURNING *;
     `,
-      [link, date, comment, clicks]
+      [link, date, comment]
     );
     await Promise.all(tagResults.map(({ id }) => createTagLink(result.id, id)));
     result.tags = tagResults;

@@ -10,7 +10,6 @@ async function createInitialLink() {
       link: "http://www.google.com",
       date: "10/10/2020",
       comment: "It's google",
-      clicks: "5",
       tags: ["Google"],
     });
 
@@ -18,7 +17,6 @@ async function createInitialLink() {
       link: "http://www.reddit.com",
       date: "10/2/2020",
       comment: "It's reddit yo",
-      clicks: "7",
       tags: ["Reddit"],
     });
 
@@ -26,8 +24,7 @@ async function createInitialLink() {
       link: "http://www.plex.tv",
       date: "10/17/2020",
       comment: "It's for my movies",
-      clicks: "3",
-      tags: ["Plex"],
+      tags: ["Plex", "New"],
     });
 
     console.log(theGoog, redditEdit, plexTv);
@@ -44,10 +41,10 @@ async function createTables() {
     await client.query(`
      CREATE TABLE link (
         id SERIAL PRIMARY KEY,
-        link varchar(255) NOT NULL,
+        link varchar(255) UNIQUE NOT NULL,
         date varchar(255) NOT NULL,                                                    
         comment varchar(255) NOT NULL,                                                 
-        clicks varchar(255) NOT NULL
+        clicks integer DEFAULT 0
       );  
       CREATE TABLE tags (
           id SERIAL PRIMARY KEY,
@@ -99,13 +96,13 @@ async function testDB() {
     console.log("Calling updateLink on link[0]");
     const link = await getAllLinks();
     console.log(link);
-    const updateUserResult = await updateLink(link[0].id, {
-      link: "http://www.plex.tv/newStuff",
-      date: "10/17/2020",
-      comment: "It's for my movies",
-      clicks: "3",
-    });
-    console.log("Result:", updateUserResult);
+    // const updateUserResult = await updateLink(link[0].id, {
+    //   link: "http://www.plex.tv/newStuff",
+    //   date: "10/17/2020",
+    //   comment: "It's for my movies",
+    //   clicks: "3",
+    // });
+    // console.log("Result:", updateUserResult);
   } catch (error) {
     console.error(error);
   } finally {

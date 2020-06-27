@@ -26,13 +26,6 @@ tagsRouter.get("/:tagName/links", async (req, res, next) => {
   const { tagName } = req.params;
   try {
     const allLinks = await getLinkByTagName(tagName);
-    // const links = allRecipes.filter((link) => {
-    //   if (link.active) {
-    //     return true;
-    //   }
-    //   return false;
-    // });
-
     res.send({
       allLinks,
     });

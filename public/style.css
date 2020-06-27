@@ -1,30 +1,15 @@
-/* .App {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 1px 1px;
-  grid-template-areas: "header header header header" "form form form form" "links links links links";
-}
-
-.form {
-  grid-area: form;
-  align-items: center;
-  justify-content: center;
-}
-
-.links {
-  grid-area: links;
-  border: 1px solid black;
-}
-
-.header {
-  grid-area: header;
-} */
-
 body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 13px;
   color: #333;
+}
+
+#search {
+  /* display: flex; */
+
+  /* border: 1px solid red; */
+  /* grid-row: 1;
+  grid-column: 1; */
 }
 
 p {
@@ -45,7 +30,7 @@ p {
 
 .header {
   width: 100%;
-  height: 75px;
+  height: 125px;
   background: #ff6633;
   border-radius: 10px;
   border: 1px solid #eb521f;

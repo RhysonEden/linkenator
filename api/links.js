@@ -10,7 +10,7 @@ const {
 } = require("../db");
 
 linkRouter.post("/", async (req, res, next) => {
-  const { url: link, date, comment, clicks = "", tags = [] } = req.body;
+  const { url: link, date, comment, clicks = 0, tags = [] } = req.body;
   console.log(req.body);
   const tagArr = tags.trim().split(/\s+/);
   const linkData = {};
