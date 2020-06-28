@@ -12,6 +12,27 @@ body {
   grid-column: 1; */
 }
 
+#linktag {
+  box-shadow: 0px 0px 0px 0px #3dc21b;
+  background-color: #44c767;
+  border-radius: 42px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 12px;
+  padding: 5px 10px;
+  text-decoration: none;
+  text-shadow: 3px 1px 0px #2f6627;
+}
+#linktag:hover {
+  background-color: #5cbf2a;
+}
+#linktag:active {
+  position: relative;
+  top: 1px;
+}
+
 p {
   padding: 10px;
 }

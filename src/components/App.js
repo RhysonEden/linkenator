@@ -108,12 +108,14 @@ const App = () => {
                 <p>Comments:{links.comment}</p>
                 <p>Number of clicks:{links.clicks}</p>
 
-                <p>
+                <div>
                   Tagged as:
                   {links.tags.map((tags, index) => (
-                    <div key={index}>{tags.name}</div>
+                    <button id="linktag" key={index}>
+                      {tags.name}
+                    </button>
                   ))}{" "}
-                </p>
+                </div>
               </div>
             ))}{" "}
         </div>
