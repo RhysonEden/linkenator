@@ -98,11 +98,11 @@ const App = () => {
                           handleRefresh(setLinks, setMessage, setTags)();
                         }}
                       >
-                        Click here to go to
+                        <p>{links.link}</p>
                       </button>
                     </a>
                   </p>
-                  <p>{links.link}</p>
+                  {/* <p>{links.link}</p> */}
                 </h3>
                 <p>Added on: {links.date}</p>
                 <p>Comments:{links.comment}</p>
