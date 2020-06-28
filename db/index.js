@@ -141,7 +141,6 @@ async function createTags(name) {
       `
     INSERT INTO tags(name)
     VALUES ($1)
-    ON CONFLICT (name) DO NOTHING
     RETURNING *
     `,
       [name]

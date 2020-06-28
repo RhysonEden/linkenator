@@ -48,7 +48,7 @@ async function createTables() {
       );  
       CREATE TABLE tags (
           id SERIAL PRIMARY KEY,
-          name varchar(255) UNIQUE NOT NULL
+          name varchar(255) NOT NULL
       );
       CREATE TABLE taglinks (
           id SERIAL PRIMARY KEY,

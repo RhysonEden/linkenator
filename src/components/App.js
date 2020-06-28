@@ -92,6 +92,7 @@ const App = () => {
                   <p>
                     <a href={links.link} key={`${index}_link`} target="_new">
                       <button
+                        id="linkbutton"
                         onClick={async () => {
                           await updateClicks(links.id, links.clicks);
                           handleRefresh(setLinks, setMessage, setTags)();
@@ -107,9 +108,12 @@ const App = () => {
                 <p>Comments:{links.comment}</p>
                 <p>Number of clicks:{links.clicks}</p>
 
-                {links.tags.map((tags, index) => (
-                  <div key={index}>{tags.name}</div>
-                ))}
+                <p>
+                  Tagged as:
+                  {links.tags.map((tags, index) => (
+                    <div key={index}>{tags.name}</div>
+                  ))}{" "}
+                </p>
               </div>
             ))}{" "}
         </div>
