@@ -34,6 +34,11 @@ const App = () => {
   const [searchInput, setSearchInput] = useState("");
   // const [clicks, setClicks] = setState(0);
 
+  const onTagClick = (event) => {
+    event.preventDefault();
+    setSearchInput(event.target.name);
+  };
+
   useEffect(() => {
     getSomething()
       .then((response) => {
@@ -111,7 +116,12 @@ const App = () => {
                 <div>
                   Tagged as:
                   {links.tags.map((tags, index) => (
-                    <button id="linktag" key={index}>
+                    <button
+                      id="linktag"
+                      key={index}
+                      name={tags.name}
+                      onClick={onTagClick}
+                    >
                       {tags.name}
                     </button>
                   ))}{" "}
