@@ -160,6 +160,7 @@ p {
     flex-wrap: wrap;
     width: 100%;
     flex: 0 0 auto;
+    text-align: center;
   }
   .ps {
     width: 100%;
